@@ -22,7 +22,7 @@ const quizSchema = new mongoose.Schema({
         required: true
       },
       imageUrl: {
-        type: String, // URL to the question image
+        type: String, 
       },
       answers: [
         {

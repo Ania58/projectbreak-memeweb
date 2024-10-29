@@ -16,7 +16,7 @@ const imageSchema = new mongoose.Schema({
     required: true
   },
   imageUrl: {
-    type: String, // URL to the image (to be handled by the upload service)
+    type: String, 
     required: true
   },
   tags: {

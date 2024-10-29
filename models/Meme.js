@@ -16,7 +16,7 @@ const memeSchema = new mongoose.Schema({
     required: true
   },
   templateId: {
-    type: String, // Reference to template ID from the API, if applicable
+    type: String, 
     required: true
   },
   topText: {
