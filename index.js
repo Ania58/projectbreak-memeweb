@@ -24,6 +24,7 @@ const { dbConnection} = require('./config/database.js');
 //routes required
 //const memesRoutes = require('./routes/memesRoutes.js')
 const imageRoutes = require('./routes/imageRoutes');
+const filmRoutes = require('./routes/filmRoutes.js')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +33,7 @@ app.use(cors());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', imageRoutes);
+app.use('/', imageRoutes, filmRoutes);
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 

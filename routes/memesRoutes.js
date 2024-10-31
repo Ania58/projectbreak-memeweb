@@ -6,6 +6,6 @@ const memeController = require('../controllers/memeControllers')
 /*router.get('/', memeController.getMemes);
 router.get('/page/:pageNumber', memeController.getPaginatedMemes);*/
 
-router.get('/', memeController.getAllImages)
+//router.get('/', memeController.getAllImages)
 
 module.exports = router;
