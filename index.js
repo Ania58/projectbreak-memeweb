@@ -22,7 +22,7 @@ const PORT = 3000;
 const { dbConnection} = require('./config/database.js');
 
 //routes required
-const memesRoutes = require('./routes/memesRoutes.js')
+//const memesRoutes = require('./routes/memesRoutes.js')
 const imageRoutes = require('./routes/imageRoutes');
 
 app.use(express.json());
@@ -32,7 +32,7 @@ app.use(cors());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', memesRoutes, imageRoutes);
+app.use('/', imageRoutes);
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
