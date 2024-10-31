@@ -32,8 +32,7 @@ app.use(cors());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', memesRoutes);
-app.use('/images', imageRoutes);
+app.use('/', memesRoutes, imageRoutes);
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 

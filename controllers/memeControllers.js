@@ -4,7 +4,7 @@ const Meme = require('../models/Meme');
 const Quiz = require('../models/Quiz');
 const axios = require('axios');
 
-const getMemes = async (req, res) => {
+/*const getMemes = async (req, res) => {
     try {
       const response = await axios.get('https://api.imgflip.com/get_memes');
       //console.log(response)
@@ -36,4 +36,16 @@ const getMemes = async (req, res) => {
     }
   };
   
-  module.exports = { getMemes, getPaginatedMemes };
+  module.exports = { getMemes, getPaginatedMemes };*/
+
+  const getAllImages = async (req, res) => {
+    try {
+        const images = await Image.find();
+        res.status(200).json(images);
+    } catch (error) {
+        console.error("Error fetching images:", error);
+        res.status(500).json({ message: "Failed to retrieve images" });
+    }
+};
+
+module.exports = {getAllImages}
