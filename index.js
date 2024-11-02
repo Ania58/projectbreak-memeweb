@@ -22,9 +22,10 @@ const PORT = 3000;
 const { dbConnection} = require('./config/database.js');
 
 //routes required
-//const memesRoutes = require('./routes/memesRoutes.js')
+
 const imageRoutes = require('./routes/imageRoutes');
 const filmRoutes = require('./routes/filmRoutes.js')
+const mainRoutes = require('./routes/mainRoutes'); 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +34,9 @@ app.use(cors());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', imageRoutes, filmRoutes);
+app.use('/', mainRoutes);
+app.use('/', filmRoutes); 
+app.use('/', imageRoutes); 
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
