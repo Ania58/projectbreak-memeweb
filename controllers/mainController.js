@@ -44,8 +44,10 @@ const axios = require('axios');
     try {
         const films = await Film.find(); 
         const images = await Image.find(); 
+        const memes = await Meme.find();
+        const quizzes = await Quiz.find();
 
-        res.status(200).json({ films, images }); // Send combined response
+        res.status(200).json({ films, images, memes, quizzes }); // Send combined response
     } catch (error) {
         console.error("Error fetching content:", error);
         res.status(500).json({ message: 'Failed to retrieve content' });

@@ -15,17 +15,21 @@ const memeSchema = new mongoose.Schema({
     ],
     required: true
   },
+  imageUrl: { // for admin-uploaded memes
+    type: String,
+    required: function() { return !this.isUserGenerated; }
+  },
   templateId: {
     type: String, 
-    required: true
+    required: function() { return this.isUserGenerated; }
   },
   topText: {
     type: String,
-    required: true
+    required: function() { return this.isUserGenerated; }
   },
   bottomText: {
     type: String,
-    required: true
+    required: function() { return this.isUserGenerated; }
   },
   tags: {
     type: [String]
@@ -39,6 +43,10 @@ const memeSchema = new mongoose.Schema({
       type: Boolean,
       required: true
     }
+  },
+  isUserGenerated: {
+    type: Boolean,
+    default: false
   },
   createdAt: {
     type: Date,
