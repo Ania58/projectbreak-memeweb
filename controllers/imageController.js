@@ -29,4 +29,8 @@ const getAllImages = async (req, res) => {
     }
 };
 
-module.exports = { addImage, getAllImages };
+const getImagesByCategory = async (category) => {
+    return await Image.find({ category });
+  };
+
+module.exports = { addImage, getAllImages, getImagesByCategory };

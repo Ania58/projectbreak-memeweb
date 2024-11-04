@@ -4,6 +4,11 @@ const Meme = require('../models/Meme');
 const Quiz = require('../models/Quiz');
 const axios = require('axios');
 
+const { getFilmsByCategory } = require('./filmController');
+const { getImagesByCategory } = require('./imageController');
+const { getMemesByCategory } = require('./memeController');
+const { getQuizzesByCategory } = require('./quizController');
+
 
 /*const getMemes = async (req, res) => {
     try {
@@ -54,4 +59,26 @@ const axios = require('axios');
     }
 };
 
-module.exports = { getAllContent };
+const getContentByCategory = async (req, res) => {
+  const category = req.query.category; 
+  //http://localhost:3000/content?category=cats
+
+  if (!category) {
+    return res.status(400).json({ message: "Category is required" });
+  }
+
+  try {
+    const films = await getFilmsByCategory(category);
+    const images = await getImagesByCategory(category);
+    const memes = await getMemesByCategory(category);
+    const quizzes = await getQuizzesByCategory(category);
+
+    const allContent = [...films, ...images, ...memes, ...quizzes];
+
+    res.json(allContent);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching content by category", error });
+  }
+};
+
+module.exports = { getAllContent, getContentByCategory };

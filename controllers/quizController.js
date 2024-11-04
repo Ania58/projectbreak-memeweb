@@ -47,4 +47,8 @@ const getAllQuizzes = async (req, res) => {
     }
 };
 
-module.exports = { addQuiz, getAllQuizzes };
+const getQuizzesByCategory = async (category) => {
+    return await Quiz.find({ category });
+  };
+
+module.exports = { addQuiz, getAllQuizzes, getQuizzesByCategory };

@@ -31,4 +31,8 @@ const getAllFilms = async (req, res) => {
     }
 };
 
-module.exports = { addFilm, getAllFilms };
+const getFilmsByCategory = async (category) => {
+    return await Film.find({ category });
+  };
+
+module.exports = { addFilm, getAllFilms, getFilmsByCategory };

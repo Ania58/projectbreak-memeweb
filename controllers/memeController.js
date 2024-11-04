@@ -74,9 +74,13 @@ const getAllMemes = async (req, res) => {
     }
 };
 
+const getMemesByCategory = async (category) => {
+  return await Meme.find({ category });
+};
 
 module.exports = {
   addAdminMeme,
   addUserGeneratedMeme,
-  getAllMemes
+  getAllMemes,
+  getMemesByCategory
 };
