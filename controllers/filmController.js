@@ -1,7 +1,7 @@
 const Film = require('../models/Film');
 
 const addFilm = async (req, res) => {
-    const { title, category, filmCategory, description, tags, agreements } = req.body;
+    const { title, category, filmCategory, description, tags, agreements, isApproved  } = req.body;
     const videoUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
     try {
@@ -12,7 +12,8 @@ const addFilm = async (req, res) => {
             videoUrl, 
             description,
             tags: tags.split(',').map(tag => tag.trim()), 
-            agreements
+            agreements,
+            isApproved: isApproved !== undefined ? isApproved : false,
         });
         res.status(201).json(newFilm);
     } catch (error) {
