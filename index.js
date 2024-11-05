@@ -1,4 +1,5 @@
 const express = require('express');
+const { approveOldContent } = require('./controllers/contentMainController');
 const path = require('path');
 //const cookieParser = require('cookie-parser');
 //const admin = require('firebase-admin');
@@ -42,6 +43,8 @@ app.use('/', filmRoutes);
 app.use('/', imageRoutes); 
 app.use('/',memeRoutes);
 app.use('/', quizRoutes);
+
+approveOldContent();
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 

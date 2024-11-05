@@ -47,10 +47,10 @@ const { getQuizzesByCategory } = require('./quizController');
 
   const getAllContent = async (req, res) => {
     try {
-        const films = await Film.find(); 
-        const images = await Image.find(); 
-        const memes = await Meme.find();
-        const quizzes = await Quiz.find();
+        const films = await Film.find({ isApproved: true }); 
+        const images = await Image.find({ isApproved: true }); 
+        const memes = await Meme.find({ isApproved: true });
+        const quizzes = await Quiz.find({ isApproved: true });
 
         res.status(200).json({ films, images, memes, quizzes }); // Send combined response
     } catch (error) {
@@ -81,4 +81,18 @@ const getContentByCategory = async (req, res) => {
   }
 };
 
-module.exports = { getAllContent, getContentByCategory };
+const getPendingContent = async (req, res) => {
+  try {
+    const films = await Film.find({ isApproved: false });
+    const images = await Image.find({ isApproved: false });
+    const memes = await Meme.find({ isApproved: false });
+    const quizzes = await Quiz.find({ isApproved: false });
+
+    res.status(200).json({ films, images, memes, quizzes });
+  } catch (error) {
+    console.error("Error fetching pending content:", error);
+    res.status(500).json({ message: 'Failed to retrieve pending content' });
+  }
+};
+
+module.exports = { getAllContent, getContentByCategory, getPendingContent };
