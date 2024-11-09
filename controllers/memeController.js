@@ -3,7 +3,7 @@ const axios = require('axios');
 
 
 const addAdminMeme = async (req, res) => {
-  const { title, category, tags, rulesAccepted, copyrightsAccepted } = req.body;
+  const { title, category, tags, rulesAccepted, copyrightsAccepted, isApproved } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
   //console.log(req.body); 
@@ -19,7 +19,8 @@ const addAdminMeme = async (req, res) => {
         rulesAccepted,
         copyrightsAccepted
       },
-      isUserGenerated: false
+      isUserGenerated: false,
+      isApproved: isApproved !== undefined ? isApproved : false
     });
 
     res.status(201).json({ message: 'Admin meme created successfully', newMeme });

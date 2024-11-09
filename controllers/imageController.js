@@ -1,7 +1,7 @@
 const Image = require('../models/Image');
 
 const addImage = async (req, res) => {
-    const { title, category, tags, agreements } = req.body;
+    const { title, category, tags, agreements, isApproved } = req.body;
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
     try {
@@ -10,7 +10,8 @@ const addImage = async (req, res) => {
             category,
             imageUrl,
             tags: tags.split(',').map(tag => tag.trim()), // Split tags into an array
-            agreements
+            agreements,
+            isApproved: isApproved !== undefined ? isApproved : false
         });
         res.status(201).json(newImage);
     } catch (error) {

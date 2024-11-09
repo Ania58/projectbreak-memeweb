@@ -15,14 +15,14 @@ const quizSchema = new mongoose.Schema({
     ],
     required: true
   },
+  imageUrl: {
+    type: String, 
+  },
   questions: [
     {
       questionText: {
         type: String,
         required: true
-      },
-      imageUrl: {
-        type: String, 
       },
       answers: [
         {
