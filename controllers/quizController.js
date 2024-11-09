@@ -2,31 +2,32 @@ const Quiz = require('../models/Quiz');
 
 
 const addQuiz = async (req, res) => {
-    const { title, category, questions, tags, agreements } = req.body;
+    const { title, category, questions, tags, agreements, isApproved } = req.body;
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
     //console.log(req.body); 
     //console.log({ agreements }); 
     //console.log("Request body:", req.body);
     //console.log("Uploaded files:", req.files);
     
+    
 
     try {
         const processedQuestions = questions.map(question => ({
             questionText: question.questionText,
-            imageUrl: question.imageUrl || null, 
             answers: question.answers.map(answer => ({
                 answerText: answer.answerText,
                 isCorrect: answer.isCorrect
             }))
         }));
-
+        //console.log(processedQuestions)
         const newQuiz = await Quiz.create({
             title,
             category,
             questions:processedQuestions,
             imageUrl, 
             tags: tags ? tags.split(',').map(tag => tag.trim()) : [], 
-            agreements
+            agreements,
+            isApproved: isApproved !== undefined ? isApproved : false
         });
 
         res.status(201).json(newQuiz);
