@@ -6,7 +6,7 @@ router.get('/page/:pageNumber', memeController.getPaginatedMemes);*/
 
 //router.get('/', memeController.getAllImages)
 
-const { getAllContent, getContentByCategory, getPendingContent } = require('../controllers/mainController');
+const { getAllContent, getContentByCategory, getPendingContent, getPaginatedContent } = require('../controllers/mainController');
 const { getAllFilms } = require('../controllers/filmController');
 const { getAllImages } = require('../controllers/imageController');
 const { getAllMemes } = require('../controllers/memeController');
@@ -24,6 +24,8 @@ router.get('/memes', getAllMemes);
 router.get('/quizzes', getAllQuizzes);
 
 router.get('/content', getContentByCategory);
+
+router.get('/content/page/:pageNumber', getPaginatedContent); 
 
 router.get('/pending', getPendingContent, promoteContentToMain);
 

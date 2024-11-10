@@ -44,7 +44,34 @@ const { getQuizzesByCategory } = require('./quizController');
   
   module.exports = { getMemes, getPaginatedMemes };*/
 
-
+  const getPaginatedContent = async (req, res) => {
+    const pageNumber = parseInt(req.params.pageNumber) || 1;
+    const itemsPerPage = 8;
+    
+    try {
+      const films = await Film.find({ isApproved: true });
+      const images = await Image.find({ isApproved: true });
+      const memes = await Meme.find({ isApproved: true });
+      const quizzes = await Quiz.find({ isApproved: true });
+  
+      const allContent = [...films, ...images, ...memes, ...quizzes].sort((a, b) => new Date(b.approvalDate) - new Date(a.approvalDate));
+      const totalContent = allContent.length;
+      const totalPages = Math.ceil(totalContent / itemsPerPage);
+  
+      const start = (pageNumber - 1) * itemsPerPage;
+      const paginatedContent = allContent.slice(start, start + itemsPerPage);
+  
+      res.json({
+        totalPages,
+        currentPage: pageNumber,
+        content: paginatedContent,
+      });
+    } catch (error) {
+      console.error("Error fetching paginated content:", error);
+      res.status(500).json({ message: "Failed to load paginated content" });
+    }
+  };
+  
   const getAllContent = async (req, res) => {
     try {
         const films = await Film.find({ isApproved: true }); 
@@ -95,4 +122,4 @@ const getPendingContent = async (req, res) => {
   }
 };
 
-module.exports = { getAllContent, getContentByCategory, getPendingContent };
+module.exports = { getPaginatedContent, getAllContent, getContentByCategory, getPendingContent };
