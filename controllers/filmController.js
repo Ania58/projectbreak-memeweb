@@ -36,4 +36,21 @@ const getFilmsByCategory = async (category) => {
     return await Film.find({ category });
   };
 
-module.exports = { addFilm, getAllFilms, getFilmsByCategory };
+
+  const voteFilm = async (req, res) => {
+    const { filmId } = req.params;
+    const { vote } = req.body; 
+
+    try {
+        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+        const film = await Film.findByIdAndUpdate(filmId, update, { new: true });
+
+        if (!film) return res.status(404).json({ message: "Film not found" });
+        res.json({ upvotes: film.upvotes, downvotes: film.downvotes });
+    } catch (error) {
+        console.error("Error updating film vote:", error);
+        res.status(500).json({ message: "Failed to update vote" });
+    }
+};
+
+module.exports = { addFilm, getAllFilms, getFilmsByCategory, voteFilm };

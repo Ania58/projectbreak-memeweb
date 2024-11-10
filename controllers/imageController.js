@@ -34,4 +34,21 @@ const getImagesByCategory = async (category) => {
     return await Image.find({ category });
   };
 
-module.exports = { addImage, getAllImages, getImagesByCategory };
+  const voteImage = async (req, res) => {
+    const { imageId } = req.params;
+    const { vote } = req.body; 
+
+    try {
+        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+        const image = await Image.findByIdAndUpdate(imageId, update, { new: true });
+
+        if (!image) return res.status(404).json({ message: "Image not found" });
+        res.json({ upvotes: image.upvotes, downvotes: image.downvotes });
+    } catch (error) {
+        console.error("Error updating image vote:", error);
+        res.status(500).json({ message: "Failed to update vote" });
+    }
+};
+
+
+module.exports = { addImage, getAllImages, getImagesByCategory, voteImage };
