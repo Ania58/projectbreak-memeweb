@@ -79,9 +79,26 @@ const getMemesByCategory = async (category) => {
   return await Meme.find({ category });
 };
 
+const voteMeme = async (req, res) => {
+  const { memeId } = req.params;
+  const { vote } = req.body;
+
+  try {
+      const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+      const meme = await Meme.findByIdAndUpdate(memeId, update, { new: true });
+
+      if (!meme) return res.status(404).json({ message: "Meme not found" });
+      res.json({ upvotes: meme.upvotes, downvotes: meme.downvotes });
+  } catch (error) {
+      console.error("Error updating meme vote:", error);
+      res.status(500).json({ message: "Failed to update vote" });
+  }
+};
+
 module.exports = {
   addAdminMeme,
   addUserGeneratedMeme,
   getAllMemes,
-  getMemesByCategory
+  getMemesByCategory,
+  voteMeme
 };

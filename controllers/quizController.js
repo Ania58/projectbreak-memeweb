@@ -52,4 +52,20 @@ const getQuizzesByCategory = async (category) => {
     return await Quiz.find({ category });
   };
 
-module.exports = { addQuiz, getAllQuizzes, getQuizzesByCategory };
+  const voteQuiz = async (req, res) => {
+    const { quizId } = req.params;
+    const { vote } = req.body;
+
+    try {
+        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+        const quiz = await Quiz.findByIdAndUpdate(quizId, update, { new: true });
+
+        if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+        res.json({ upvotes: quiz.upvotes, downvotes: quiz.downvotes });
+    } catch (error) {
+        console.error("Error updating quiz vote:", error);
+        res.status(500).json({ message: "Failed to update vote" });
+    }
+};
+
+module.exports = { addQuiz, getAllQuizzes, getQuizzesByCategory, voteQuiz };
