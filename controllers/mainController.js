@@ -89,4 +89,47 @@ const getPendingContent = async (req, res) => {
   }
 };
 
-module.exports = { getPaginatedContent, getAllContent, getContentByCategory, getPendingContent };
+const searchContent = async (req, res) => {
+  const query = req.query.query;
+
+  try {
+    const films = await Film.find({
+      $or: [
+        { category: query },
+        { filmCategory: query },
+        { tags: { $in: [query] } }
+      ]
+    });
+    
+    const images = await Image.find({
+      $or: [
+        { category: query },
+        { tags: { $in: [query] } }
+      ]
+    });
+    
+    const memes = await Meme.find({
+      $or: [
+        { category: query },
+        { tags: { $in: [query] } }
+      ]
+    });
+    
+    const quizzes = await Quiz.find({
+      $or: [
+        { category: query },
+        { tags: { $in: [query] } }
+      ]
+    });
+
+    
+    const allContent = [...films, ...images, ...memes, ...quizzes];
+
+    res.json({ content: allContent });
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    res.status(500).json({ message: "Failed to fetch search results" });
+  }
+};
+
+module.exports = { getPaginatedContent, getAllContent, getContentByCategory, getPendingContent, searchContent };
