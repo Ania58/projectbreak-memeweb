@@ -21,11 +21,12 @@ const { getQuizzesByCategory } = require('./quizController');
       const memes = (await Meme.find({ isApproved: true })).map(item => ({ ...item.toObject(), type: 'meme' }));
       const quizzes = (await Quiz.find({ isApproved: true })).map(item => ({ ...item.toObject(), type: 'quiz' }));
   
-      const allContent = [...films, ...images, ...memes, ...quizzes].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      const allContent = [...films, ...images, ...memes, ...quizzes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       const totalContent = allContent.length;
       const totalPages = Math.ceil(totalContent / itemsPerPage);
   
-      const start = (pageNumber - 1) * itemsPerPage;
+      //const start = (pageNumber - 1) * itemsPerPage;
+      const start = (totalPages - pageNumber) * itemsPerPage;
       const paginatedContent = allContent.slice(start, start + itemsPerPage);
   
       res.json({
