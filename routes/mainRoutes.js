@@ -29,7 +29,7 @@ router.get('/content/search', searchContent);
 
 router.get('/content/page/:pageNumber', getPaginatedContent); 
 
-router.get('/pending', getPendingContent, promoteContentToMain);
+router.get('/pending',  promoteContentToMain, getPendingContent);
 
 
 module.exports = router;

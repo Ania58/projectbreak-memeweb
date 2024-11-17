@@ -43,6 +43,10 @@ app.use('/', filmRoutes);
 app.use('/', imageRoutes); 
 app.use('/',memeRoutes);
 app.use('/', quizRoutes);
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ message: 'An unexpected error occurred.' });
+});
 
 approveOldContent();
 
