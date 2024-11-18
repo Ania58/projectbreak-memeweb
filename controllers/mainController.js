@@ -2,6 +2,7 @@ const Film = require('../models/Film');
 const Image = require('../models/Image');
 const Meme = require('../models/Meme');
 const Quiz = require('../models/Quiz');
+const Comment = require('../models/Comment');
 
 
 const { getFilmsByCategory } = require('./filmController');
@@ -133,4 +134,73 @@ const searchContent = async (req, res) => {
   }
 };
 
-module.exports = { getPaginatedContent, getAllContent, getContentByCategory, getPendingContent, searchContent };
+const getContentById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      let content = null;
+      let type = null;
+
+      content = await Film.findById(id);
+      if (content) {
+          type = 'film';
+      }
+
+      if (!content) {
+          content = await Image.findById(id);
+          if (content) {
+              type = 'image';
+          }
+      }
+
+      if (!content) {
+          content = await Meme.findById(id);
+          if (content) {
+              type = 'meme';
+          }
+      }
+
+      if (!content) {
+          content = await Quiz.findById(id);
+          if (content) {
+              type = 'quiz';
+          }
+      }
+
+      if (!content) {
+          return res.status(404).json({ message: 'Content not found.' });
+      }
+
+      content = content.toObject();
+      content.type = type;
+
+      const comments = await Comment.find({ contentType: type, contentId: id }).sort({ createdAt: -1 });
+
+      const commentMap = {};
+      comments.forEach(comment => {
+          comment = comment.toObject();
+          comment.replies = [];
+          commentMap[comment._id] = comment;
+      });
+
+      const rootComments = [];
+      comments.forEach(comment => {
+          if (comment.parentCommentId) {
+              if (commentMap[comment.parentCommentId]) {
+                  commentMap[comment.parentCommentId].replies.push(comment);
+              }
+          } else {
+              rootComments.push(comment);
+          }
+      });
+
+      content.comments = rootComments;
+
+      res.status(200).json(content);
+  } catch (error) {
+      console.error('Error fetching content by ID:', error);
+      res.status(500).json({ message: 'Failed to retrieve content.' });
+  }
+};
+
+module.exports = { getPaginatedContent, getAllContent, getContentByCategory, getPendingContent, searchContent, getContentById };
