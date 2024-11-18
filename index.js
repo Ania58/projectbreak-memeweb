@@ -28,6 +28,7 @@ const imageRoutes = require('./routes/imageRoutes');
 const filmRoutes = require('./routes/filmRoutes.js');
 const memeRoutes = require('./routes/memeRoutes.js');
 const quizRoutes = require('./routes/quizRoutes.js');
+const commentRoutes = require('./routes/commentRoutes');
 const mainRoutes = require('./routes/mainRoutes'); 
 
 app.use(express.json());
@@ -41,8 +42,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', mainRoutes);
 app.use('/', filmRoutes); 
 app.use('/', imageRoutes); 
-app.use('/',memeRoutes);
+app.use('/', memeRoutes);
 app.use('/', quizRoutes);
+app.use('/', commentRoutes);
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({ message: 'An unexpected error occurred.' });
