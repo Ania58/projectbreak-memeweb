@@ -12,6 +12,7 @@ const { getAllImages } = require('../controllers/imageController');
 const { getAllMemes } = require('../controllers/memeController');
 const { getAllQuizzes } = require('../controllers/quizController');
 const { promoteContentToMain } = require('../controllers/contentMainController'); 
+const { getTopContent } = require('../controllers/topContentController');
 
 router.get('/', getAllContent);
 
@@ -32,6 +33,8 @@ router.get('/content/page/:pageNumber', getPaginatedContent);
 router.get('/content/:id', getContentById); //if I have authentication done, here goes a middleware (comment only for the logged ones)
 
 router.get('/pending',  promoteContentToMain, getPendingContent);
+
+router.get('/top', getTopContent);
 
 
 
