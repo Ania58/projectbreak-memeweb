@@ -95,7 +95,7 @@ const searchContent = async (req, res) => {
   const query = req.query.query;
 
   try {
-    const films = await Film.find({
+    /*const films = await Film.find({
       $or: [
         { category: query },
         { filmCategory: query },
@@ -121,6 +121,37 @@ const searchContent = async (req, res) => {
       $or: [
         { category: query },
         { tags: { $in: [query] } }
+      ]
+    });*/
+
+    const regexQuery = new RegExp(query, 'i'); // case-insensitive 
+
+    const films = await Film.find({
+      $or: [
+        { category: { $regex: regexQuery } },
+        { filmCategory: { $regex: regexQuery } },
+        { tags: { $elemMatch: { $regex: regexQuery } } }
+      ]
+    });
+
+    const images = await Image.find({
+      $or: [
+        { category: { $regex: regexQuery } },
+        { tags: { $elemMatch: { $regex: regexQuery } } }
+      ]
+    });
+
+    const memes = await Meme.find({
+      $or: [
+        { category: { $regex: regexQuery } },
+        { tags: { $elemMatch: { $regex: regexQuery } } }
+      ]
+    });
+
+    const quizzes = await Quiz.find({
+      $or: [
+        { category: { $regex: regexQuery } },
+        { tags: { $elemMatch: { $regex: regexQuery } } }
       ]
     });
 
