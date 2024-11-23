@@ -5,6 +5,10 @@ const addImage = async (req, res) => {
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
     try {
+      const agreements = {
+        rulesAccepted: req.body['agreements.rulesAccepted'] === 'true',
+        copyrightsAccepted: req.body['agreements.copyrightsAccepted'] === 'true',
+    };
         const newImage = await Image.create({
             title,
             category,
