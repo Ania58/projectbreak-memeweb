@@ -1,5 +1,5 @@
 const express = require('express');
-const { approveOldContent } = require('./controllers/contentMainController');
+const { approveOldContent } = require('./controllers/oldContentChanges.js');
 const path = require('path');
 //const cookieParser = require('cookie-parser');
 //const admin = require('firebase-admin');

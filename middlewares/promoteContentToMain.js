@@ -20,11 +20,9 @@ async function promoteContentToMain(req, res, next) {
                 if (upvotes >= minUpvotes && upvotes >= downvotes * ratio) {
                     content.isApproved = true; 
                     await content.save(); 
-                    //console.log(`Promoted ${ContentType.modelName} with ID: ${content._id}`);
                 }
             }
         }
-        //console.log("Content promotion check completed");
         next(); 
     } catch (error) {
         console.error("Error in promoteContentToMain middleware:", error);
@@ -32,24 +30,4 @@ async function promoteContentToMain(req, res, next) {
     }
 }
 
-async function approveOldContent() {
-    try {
-        await Film.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Films updated');
-
-        await Image.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Images updated');
-
-        await Meme.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Memes updated');
-
-        await Quiz.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Quizzes updated');
-
-    } catch (error) {
-        console.error('Error updating old content:', error);
-    }
-}
-
-
-module.exports = { promoteContentToMain, approveOldContent }
+module.exports = promoteContentToMain;

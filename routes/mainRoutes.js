@@ -11,8 +11,8 @@ const { getAllFilms } = require('../controllers/filmController');
 const { getAllImages } = require('../controllers/imageController');
 const { getAllMemes } = require('../controllers/memeController');
 const { getAllQuizzes } = require('../controllers/quizController');
-const { promoteContentToMain } = require('../controllers/contentMainController'); 
 const { getTopContent } = require('../controllers/topContentController');
+const  promoteContentToMain  = require('../middlewares/promoteContentToMain')
 
 router.get('/', getAllContent);
 
