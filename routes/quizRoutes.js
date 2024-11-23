@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/quizzes', upload.single('file'), addQuiz);
 
-router.post('/#add/quizzes', upload.single('file'), addQuiz);
+router.post('/add/quizzes', upload.single('file'), addQuiz);
 
 router.put('/quizzes/:id', editQuiz); 
 

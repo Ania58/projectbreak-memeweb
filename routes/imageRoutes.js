@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/images', upload.single('file'), addImage); 
 
-router.post('/#add/images', upload.single('file'), addImage);
+router.post('/add/images', upload.single('file'), addImage);
 
 router.put('/images/:id', editImage); 
 

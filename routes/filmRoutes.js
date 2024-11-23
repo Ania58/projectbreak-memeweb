@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/films', upload.single('file'), addFilm); 
 
-router.post('/#add/films', upload.single('file'), addFilm);
+router.post('/add/films', upload.single('file'), addFilm);
 
 router.put('/films/:id', editFilm); 
 
