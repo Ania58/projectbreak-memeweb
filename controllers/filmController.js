@@ -22,6 +22,33 @@ const addFilm = async (req, res) => {
     }
 };
 
+const editFilm = async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+  
+    try {
+      const updatedFilm = await Film.findByIdAndUpdate(id, updates, { new: true });
+      if (!updatedFilm) return res.status(404).json({ message: 'Film not found' });
+      res.status(200).json(updatedFilm);
+    } catch (error) {
+      console.error('Error editing film:', error);
+      res.status(500).json({ message: 'Failed to edit film' });
+    }
+  };
+  
+  const deleteFilm = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const deletedFilm = await Film.findByIdAndDelete(id);
+      if (!deletedFilm) return res.status(404).json({ message: 'Film not found' });
+      res.status(200).json({ message: 'Film deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting film:', error);
+      res.status(500).json({ message: 'Failed to delete film' });
+    }
+  };
+
 const getAllFilms = async (req, res) => {
     try {
         const films = await Film.find();  // Retrieve all films
@@ -53,4 +80,4 @@ const getFilmsByCategory = async (category) => {
     }
 };
 
-module.exports = { addFilm, getAllFilms, getFilmsByCategory, voteFilm };
+module.exports = { addFilm, editFilm, deleteFilm, getAllFilms, getFilmsByCategory, voteFilm };

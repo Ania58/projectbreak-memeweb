@@ -20,6 +20,35 @@ const addImage = async (req, res) => {
     }
 };
 
+const editImage = async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+  
+    try {
+      const updatedImage = await Image.findByIdAndUpdate(id, updates, { new: true });
+      if (!updatedImage) return res.status(404).json({ message: 'Image not found' });
+      res.status(200).json(updatedImage);
+    } catch (error) {
+      console.error('Error editing image:', error);
+      res.status(500).json({ message: 'Failed to edit image' });
+    }
+  };
+  
+
+  const deleteImage = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const deletedImage = await Image.findByIdAndDelete(id);
+      if (!deletedImage) return res.status(404).json({ message: 'Image not found' });
+      res.status(200).json({ message: 'Image deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      res.status(500).json({ message: 'Failed to delete image' });
+    }
+  };
+  
+
 const getAllImages = async (req, res) => {
     try {
         const images = await Image.find();
@@ -51,4 +80,4 @@ const getImagesByCategory = async (category) => {
 };
 
 
-module.exports = { addImage, getAllImages, getImagesByCategory, voteImage };
+module.exports = { addImage, editImage, deleteImage, getAllImages, getImagesByCategory, voteImage };

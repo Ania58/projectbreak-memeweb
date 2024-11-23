@@ -37,6 +37,33 @@ const addQuiz = async (req, res) => {
     }
 };
 
+const editQuiz = async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+  
+    try {
+      const updatedQuiz = await Quiz.findByIdAndUpdate(id, updates, { new: true });
+      if (!updatedQuiz) return res.status(404).json({ message: 'Quiz not found' });
+      res.status(200).json(updatedQuiz);
+    } catch (error) {
+      console.error('Error editing quiz:', error);
+      res.status(500).json({ message: 'Failed to edit quiz' });
+    }
+  };
+  
+  
+  const deleteQuiz = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const deletedQuiz = await Quiz.findByIdAndDelete(id);
+      if (!deletedQuiz) return res.status(404).json({ message: 'Quiz not found' });
+      res.status(200).json({ message: 'Quiz deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting quiz:', error);
+      res.status(500).json({ message: 'Failed to delete quiz' });
+    }
+  };
 
 const getAllQuizzes = async (req, res) => {
     try {
@@ -68,4 +95,4 @@ const getQuizzesByCategory = async (category) => {
     }
 };
 
-module.exports = { addQuiz, getAllQuizzes, getQuizzesByCategory, voteQuiz };
+module.exports = { addQuiz, editQuiz, deleteQuiz, getAllQuizzes, getQuizzesByCategory, voteQuiz };
