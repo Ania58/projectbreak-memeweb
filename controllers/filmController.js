@@ -12,7 +12,10 @@ const addFilm = async (req, res) => {
             videoUrl, 
             description,
             tags: tags.split(',').map(tag => tag.trim()), 
-            agreements,
+            agreements : {
+              rulesAccepted: req.body['agreements.rulesAccepted'] === 'true', 
+              copyrightsAccepted: req.body['agreements.copyrightsAccepted'] === 'true',
+          },
             isApproved: isApproved !== undefined ? isApproved : false,
         });
         res.status(201).json(newFilm);
