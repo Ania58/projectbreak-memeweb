@@ -66,8 +66,8 @@ const addUserGeneratedMeme = async (req, res) => {
       ? tags.map((tag) => tag.trim())
       : tags.split(',').map((tag) => tag.trim()),
       agreements : {
-        rulesAccepted: rulesAccepted === 'true',
-        copyrightsAccepted: copyrightsAccepted === 'true'
+        rulesAccepted: rulesAccepted === 'true' || rulesAccepted === true,
+        copyrightsAccepted: copyrightsAccepted === 'true' || copyrightsAccepted === true
       },
       isUserGenerated: true
     });
