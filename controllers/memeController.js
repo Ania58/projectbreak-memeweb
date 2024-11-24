@@ -1,13 +1,11 @@
 const Meme = require('../models/Meme');
 const axios = require('axios');
+const qs = require('qs');
 
 
 const addAdminMeme = async (req, res) => {
   const { title, category, tags, rulesAccepted, copyrightsAccepted, isApproved } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
-
-  //console.log(req.body); 
-  //console.log({ rulesAccepted, copyrightsAccepted }); 
 
   try {
     const newMeme = await Meme.create({
@@ -35,25 +33,41 @@ const addUserGeneratedMeme = async (req, res) => {
   const { title, category, templateId, topText, bottomText, tags, rulesAccepted, copyrightsAccepted } = req.body;
 
   try {
-    const response = await axios.post('https://api.imgflip.com/caption_image', {
-      template_id: templateId,
+    const apiPayload = {
+      template_id: templateId.id || templateId,
       text0: topText,
       text1: bottomText,
-    });
+      username: process.env.IMGFLIP_USERNAME,
+      password: process.env.IMGFLIP_PASSWORD,
+    };
 
-    const imageUrl = response.data.data.url;
+    const response = await axios.post(
+      'https://api.imgflip.com/caption_image',
+      qs.stringify(apiPayload), 
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      }
+    );
+
+    const imageUrl = response.data?.data?.url; 
+
+    if (!imageUrl) {
+      throw new Error("Imgflip API did not return a valid URL");
+    }
 
     const newMeme = await Meme.create({
       title,
       category,
-      templateId,
+      templateId: templateId.id || templateId,
       topText,
       bottomText,
       imageUrl,
-      tags: tags.split(',').map(tag => tag.trim()), 
-      agreements: {
-        rulesAccepted,
-        copyrightsAccepted
+      tags: Array.isArray(tags)
+      ? tags.map((tag) => tag.trim())
+      : tags.split(',').map((tag) => tag.trim()),
+      agreements : {
+        rulesAccepted: rulesAccepted === 'true',
+        copyrightsAccepted: copyrightsAccepted === 'true'
       },
       isUserGenerated: true
     });

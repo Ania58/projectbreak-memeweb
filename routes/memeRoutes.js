@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/memes', upload.single('file'), addAdminMeme);
 
-router.post('/add/meme', addUserGeneratedMeme); 
+router.post('/add/memes', addUserGeneratedMeme); 
 
 router.put('/memes/:id', editMeme); 
 
