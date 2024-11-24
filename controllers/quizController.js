@@ -1,40 +1,51 @@
 const Quiz = require('../models/Quiz');
 
-
 const addQuiz = async (req, res) => {
-    const { title, category, questions, tags, agreements, isApproved } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
-    //console.log(req.body); 
-    //console.log({ agreements }); 
-    //console.log("Request body:", req.body);
-    //console.log("Uploaded files:", req.files);
-    
-    
+  try {
+    //console.log('Incoming request body:', req.body);
+    //console.log('Uploaded file:', req.file);
 
-    try {
-        const processedQuestions = questions.map(question => ({
-            questionText: question.questionText,
-            answers: question.answers.map(answer => ({
-                answerText: answer.answerText,
-                isCorrect: answer.isCorrect
-            }))
-        }));
-        //console.log(processedQuestions)
-        const newQuiz = await Quiz.create({
-            title,
-            category,
-            questions:processedQuestions,
-            imageUrl, 
-            tags: tags ? tags.split(',').map(tag => tag.trim()) : [], 
-            agreements,
-            isApproved: isApproved !== undefined ? isApproved : false
-        });
-
-        res.status(201).json(newQuiz);
-    } catch (error) {
-        console.error("Error adding quiz:", error);
-        res.status(500).json({ message: 'Failed to add quiz' });
+    
+    let questions = req.body.questions;
+    if (typeof questions === 'string') {
+      questions = JSON.parse(questions);
     }
+
+    if (!questions || questions.length === 0) {
+      return res.status(400).json({ message: 'A quiz must have at least one question.' });
+    }
+
+    questions.forEach((question, index) => {
+      if (!question.questionText) {
+        throw new Error(`Question ${index + 1} must have text.`);
+      }
+      if (!question.answers || question.answers.length < 2) {
+        throw new Error(`Question ${index + 1} must have at least two answers.`);
+      }
+      const correctAnswers = question.answers.filter((answer) => answer.isCorrect);
+      if (correctAnswers.length === 0) {
+        throw new Error(`Question ${index + 1} must have at least one correct answer.`);
+      }
+    });
+
+    const newQuiz = await Quiz.create({
+      title: req.body.title,
+      category: req.body.category,
+      questions,
+      imageUrl: `/uploads/${req.file.filename}`, 
+      tags: req.body.tags.split(',').map((tag) => tag.trim()), 
+      agreements: {
+        rulesAccepted: req.body.rulesAccepted === 'true' || req.body.rulesAccepted === true,
+        copyrightsAccepted: req.body.copyrightsAccepted === 'true' || req.body.copyrightsAccepted === true,
+      },
+      isApproved: req.body.isApproved !== undefined ? req.body.isApproved : false,
+    });
+
+    res.status(201).json({ message: 'Quiz added successfully', newQuiz });
+  } catch (error) {
+    console.error('Error adding quiz:', error.message || error);
+    res.status(400).json({ message: error.message || 'Failed to add quiz' });
+  }
 };
 
 const editQuiz = async (req, res) => {
@@ -50,7 +61,6 @@ const editQuiz = async (req, res) => {
       res.status(500).json({ message: 'Failed to edit quiz' });
     }
   };
-  
   
   const deleteQuiz = async (req, res) => {
     const { id } = req.params;
