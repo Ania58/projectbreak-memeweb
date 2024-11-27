@@ -15,7 +15,8 @@ const addImage = async (req, res) => {
             imageUrl,
             tags: tags.split(',').map(tag => tag.trim()), // Split tags into an array
             agreements,
-            isApproved: isApproved !== undefined ? isApproved : false
+            isApproved: isApproved !== undefined ? isApproved : false,
+            userId: req.user.uid,
         });
         res.status(201).json(newImage);
     } catch (error) {

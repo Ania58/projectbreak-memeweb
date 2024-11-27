@@ -32,8 +32,8 @@ const commentRoutes = require('./routes/commentRoutes');
 const footerRoutes = require('./routes/footerRoutes');
 const mainRoutes = require('./routes/mainRoutes'); 
 const authRoutes = require('./routes/auth.js');
-const profileRoutes = require('./routes/profile.js');
-const postRoutes = require('./routes/posts.js');
+const profileRoutes = require('./routes/profileRoutes.js');
+const postRoutes = require('./routes/postsRoutes.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

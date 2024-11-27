@@ -18,7 +18,8 @@ const addAdminMeme = async (req, res) => {
         copyrightsAccepted
       },
       isUserGenerated: false,
-      isApproved: isApproved !== undefined ? isApproved : false
+      isApproved: isApproved !== undefined ? isApproved : false,
+      userId: req.user.uid,
     });
 
     res.status(201).json({ message: 'Admin meme created successfully', newMeme });
@@ -69,7 +70,8 @@ const addUserGeneratedMeme = async (req, res) => {
         rulesAccepted: rulesAccepted === 'true' || rulesAccepted === true,
         copyrightsAccepted: copyrightsAccepted === 'true' || copyrightsAccepted === true
       },
-      isUserGenerated: true
+      isUserGenerated: true,
+      userId: req.user.uid,
     });
 
     res.status(201).json({ message: 'User-generated meme created successfully', newMeme });

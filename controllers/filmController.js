@@ -17,6 +17,7 @@ const addFilm = async (req, res) => {
               copyrightsAccepted: req.body['agreements.copyrightsAccepted'] === 'true',
           },
             isApproved: isApproved !== undefined ? isApproved : false,
+            userId: req.user.uid,
         });
         res.status(201).json(newFilm);
     } catch (error) {

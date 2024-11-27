@@ -39,6 +39,7 @@ const addQuiz = async (req, res) => {
         copyrightsAccepted: req.body.copyrightsAccepted === 'true' || req.body.copyrightsAccepted === true,
       },
       isApproved: req.body.isApproved !== undefined ? req.body.isApproved : false,
+      userId: req.user.uid,
     });
 
     res.status(201).json({ message: 'Quiz added successfully', newQuiz });
