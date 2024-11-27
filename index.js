@@ -2,7 +2,7 @@ const express = require('express');
 const { approveOldContent } = require('./controllers/oldContentChanges.js');
 const path = require('path');
 //const cookieParser = require('cookie-parser');
-//const admin = require('firebase-admin');
+const admin = require('firebase-admin');
 //const firebase = require('./config/firebase')
 //const swaggerUi = require('swagger-ui-express');
 //const docs = require('./docs/index'); 
@@ -10,10 +10,10 @@ const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
 
-
-/*admin.initializeApp({
-    credential: admin.credential.cert(firebase),
-  });*/
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
 
 const app = express();
 const PORT = 3000;
@@ -31,6 +31,9 @@ const quizRoutes = require('./routes/quizRoutes.js');
 const commentRoutes = require('./routes/commentRoutes');
 const footerRoutes = require('./routes/footerRoutes');
 const mainRoutes = require('./routes/mainRoutes'); 
+const authRoutes = require('./routes/auth.js');
+const profileRoutes = require('./routes/profile.js');
+const postRoutes = require('./routes/posts.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,6 +50,9 @@ app.use('/', memeRoutes);
 app.use('/', quizRoutes);
 app.use('/', commentRoutes);
 app.use('/', footerRoutes);
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
+app.use('/posts', postRoutes);
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({ message: 'An unexpected error occurred.' });
