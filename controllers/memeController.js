@@ -34,6 +34,10 @@ const addUserGeneratedMeme = async (req, res) => {
   const { title, category, templateId, topText, bottomText, tags, rulesAccepted, copyrightsAccepted } = req.body;
 
   try {
+    if (!req.user || !req.user.uid) {
+      return res.status(403).json({ message: "Unauthorized: User ID missing" });
+    }
+
     const apiPayload = {
       template_id: templateId.id || templateId,
       text0: topText,
