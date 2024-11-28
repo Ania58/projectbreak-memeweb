@@ -5,6 +5,9 @@ const addQuiz = async (req, res) => {
     //console.log('Incoming request body:', req.body);
     //console.log('Uploaded file:', req.file);
 
+    if (!req.user || !req.user.uid) {
+      return res.status(403).json({ message: "Unauthorized: User ID missing" });
+    }
     
     let questions = req.body.questions;
     if (typeof questions === 'string') {
