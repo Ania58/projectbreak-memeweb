@@ -5,6 +5,9 @@ const addFilm = async (req, res) => {
     const videoUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
     try {
+        if (!req.user || !req.user.uid) {
+          return res.status(401).json({ message: "User not authenticated" });
+      }
         const newFilm = await Film.create({
             title,
             category,

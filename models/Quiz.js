@@ -57,7 +57,8 @@ const quizSchema = new mongoose.Schema({
   },
    upvotes: { type: Number, default: 0 },
    downvotes: { type: Number, default: 0 },
-   isApproved: { type: Boolean, default: false }
+   isApproved: { type: Boolean, default: false },
+   userId: { type: String, required: true },
 });
 
 module.exports = mongoose.model('Quiz', quizSchema);
