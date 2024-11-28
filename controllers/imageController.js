@@ -5,6 +5,10 @@ const addImage = async (req, res) => {
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
 
     try {
+      if (!req.user || !req.user.uid) {
+        return res.status(401).json({ message: "User not authenticated" });
+    }
+    
       const agreements = {
         rulesAccepted: req.body['agreements.rulesAccepted'] === 'true',
         copyrightsAccepted: req.body['agreements.copyrightsAccepted'] === 'true',
