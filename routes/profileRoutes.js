@@ -38,8 +38,17 @@ router.post("/", verifyToken, async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    const user = await User.findOne({ uid: req.user.uid });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    let user = await User.findOne({ uid: req.user.uid });
+    if (!user) {
+      user = new User({
+        uid: req.user.uid,
+        name,
+        email,
+        posts: [],
+      });
+      await user.save();
+      return res.status(201).json({ message: "User created successfully", user });
+    }
 
     user.name = name || user.name;
     user.email = email || user.email;

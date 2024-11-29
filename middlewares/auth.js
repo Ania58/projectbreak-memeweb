@@ -9,6 +9,7 @@ const verifyToken = async (req, res, next) => {
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
     req.user = { uid: decodedToken.uid };
+    console.log("Decoded Token:", decodedToken);
     next();
   } catch (error) {
     console.error("Token verification failed:", error);
