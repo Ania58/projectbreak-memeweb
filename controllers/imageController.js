@@ -34,6 +34,14 @@ const editImage = async (req, res) => {
     const updates = req.body;
   
     try {
+
+      const image = await Image.findById(id);
+        if (!image) return res.status(404).json({ message: 'Image not found' });
+
+        if (image.userId !== req.user.uid) {
+            return res.status(403).json({ message: 'Unauthorized: You can only edit your own images.' });
+        }
+
       const updatedImage = await Image.findByIdAndUpdate(id, updates, { new: true });
       if (!updatedImage) return res.status(404).json({ message: 'Image not found' });
       res.status(200).json(updatedImage);
@@ -48,8 +56,18 @@ const editImage = async (req, res) => {
     const { id } = req.params;
   
     try {
-      const deletedImage = await Image.findByIdAndDelete(id);
-      if (!deletedImage) return res.status(404).json({ message: 'Image not found' });
+      /*const deletedImage = await Image.findByIdAndDelete(id);
+      if (!deletedImage) return res.status(404).json({ message: 'Image not found' });*/
+
+      const image = await Image.findById(id);
+      if (!image) return res.status(404).json({ message: 'Image not found' });
+
+      if (image.userId !== req.user.uid) {
+          return res.status(403).json({ message: 'Unauthorized: You can only delete your own images.' });
+      }
+
+      await image.deleteOne();
+
       res.status(200).json({ message: 'Image deleted successfully' });
     } catch (error) {
       console.error('Error deleting image:', error);
@@ -72,6 +90,17 @@ const getImagesByCategory = async (category) => {
     return await Image.find({ category });
   };
 
+  const getUserImages = async (req, res) => {
+    try {
+      const userId = req.user.uid;
+      const images = await Image.find({ userId });
+      res.status(200).json(images);
+    } catch (error) {
+      console.error("Error fetching user's images:", error);
+      res.status(500).json({ message: "Failed to retrieve user's images" });
+    }
+  };
+
   const voteImage = async (req, res) => {
     const { imageId } = req.params;
     const { vote } = req.body; 
@@ -89,4 +118,4 @@ const getImagesByCategory = async (category) => {
 };
 
 
-module.exports = { addImage, editImage, deleteImage, getAllImages, getImagesByCategory, voteImage };
+module.exports = { addImage, editImage, deleteImage, getAllImages, getImagesByCategory, getUserImages, voteImage };

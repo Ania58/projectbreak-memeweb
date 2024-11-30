@@ -90,6 +90,14 @@ const editMeme = async (req, res) => {
   const updates = req.body;
 
   try {
+
+    const meme = await Meme.findById(id);
+        if (!meme) return res.status(404).json({ message: 'Meme not found' });
+
+        if (meme.userId !== req.user.uid) {
+            return res.status(403).json({ message: 'Unauthorized: You can only edit your own memes.' });
+        }
+
     const updatedMeme = await Meme.findByIdAndUpdate(id, updates, { new: true });
     if (!updatedMeme) return res.status(404).json({ message: 'Meme not found' });
     res.status(200).json(updatedMeme);
@@ -104,8 +112,18 @@ const deleteMeme = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedMeme = await Meme.findByIdAndDelete(id);
-    if (!deletedMeme) return res.status(404).json({ message: 'Meme not found' });
+    /*const deletedMeme = await Meme.findByIdAndDelete(id);
+    if (!deletedMeme) return res.status(404).json({ message: 'Meme not found' });*/
+
+    const meme = await Meme.findById(id);
+    if (!meme) return res.status(404).json({ message: 'Meme not found' });
+
+    if (meme.userId !== req.user.uid) {
+        return res.status(403).json({ message: 'Unauthorized: You can only delete your own memes.' });
+    }
+
+    await meme.deleteOne();
+
     res.status(200).json({ message: 'Meme deleted successfully' });
   } catch (error) {
     console.error('Error deleting meme:', error);
@@ -125,6 +143,17 @@ const getAllMemes = async (req, res) => {
 
 const getMemesByCategory = async (category) => {
   return await Meme.find({ category });
+};
+
+const getUserMemes = async (req, res) => {
+  try {
+    const userId = req.user.uid;
+    const memes = await Meme.find({ userId });
+    res.status(200).json(memes);
+  } catch (error) {
+    console.error("Error fetching user's memes:", error);
+    res.status(500).json({ message: "Failed to retrieve user's memes" });
+  }
 };
 
 const voteMeme = async (req, res) => {
@@ -150,5 +179,6 @@ module.exports = {
   deleteMeme,
   getAllMemes,
   getMemesByCategory,
+  getUserMemes,
   voteMeme
 };

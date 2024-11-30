@@ -7,22 +7,31 @@ router.get('/page/:pageNumber', memeController.getPaginatedMemes);*/
 //router.get('/', memeController.getAllImages)
 
 const { getAllContent, getContentByCategory, getPendingContent, getPaginatedContent, searchContent, getContentById } = require('../controllers/mainController');
-const { getAllFilms } = require('../controllers/filmController');
-const { getAllImages } = require('../controllers/imageController');
-const { getAllMemes } = require('../controllers/memeController');
-const { getAllQuizzes } = require('../controllers/quizController');
+const { getAllFilms, getUserFilms } = require('../controllers/filmController');
+const { getAllImages, getUserImages } = require('../controllers/imageController');
+const { getAllMemes, getUserMemes } = require('../controllers/memeController');
+const { getAllQuizzes, getUserQuizzes } = require('../controllers/quizController');
 const { getTopContent } = require('../controllers/topContentController');
-const  promoteContentToMain  = require('../middlewares/promoteContentToMain')
+const  promoteContentToMain  = require('../middlewares/promoteContentToMain');
+const verifyToken = require('../middlewares/auth')
 
 router.get('/', getAllContent);
 
 router.get('/films', getAllFilms);
 
+router.get('/user/films', verifyToken, getUserFilms);
+
 router.get('/images', getAllImages);
+
+router.get('/user/images', verifyToken, getUserImages);
 
 router.get('/memes', getAllMemes);
 
+router.get('/user/memes', verifyToken, getUserMemes);
+
 router.get('/quizzes', getAllQuizzes);
+
+router.get('/user/quizzes', verifyToken, getUserQuizzes);
 
 router.get('/content', getContentByCategory);
 

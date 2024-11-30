@@ -57,6 +57,14 @@ const editQuiz = async (req, res) => {
     const updates = req.body;
   
     try {
+
+      const quiz = await Quiz.findById(id);
+        if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+
+        if (quiz.userId !== req.user.uid) {
+            return res.status(403).json({ message: 'Unauthorized: You can only edit your own quizzes.' });
+        }
+
       const updatedQuiz = await Quiz.findByIdAndUpdate(id, updates, { new: true });
       if (!updatedQuiz) return res.status(404).json({ message: 'Quiz not found' });
       res.status(200).json(updatedQuiz);
@@ -70,8 +78,18 @@ const editQuiz = async (req, res) => {
     const { id } = req.params;
   
     try {
-      const deletedQuiz = await Quiz.findByIdAndDelete(id);
-      if (!deletedQuiz) return res.status(404).json({ message: 'Quiz not found' });
+      /*const deletedQuiz = await Quiz.findByIdAndDelete(id);
+      if (!deletedQuiz) return res.status(404).json({ message: 'Quiz not found' });*/
+
+      const quiz = await Quiz.findById(id);
+      if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+
+      if (quiz.userId !== req.user.uid) {
+          return res.status(403).json({ message: 'Unauthorized: You can only delete your own quizzes.' });
+      }
+
+      await quiz.deleteOne();
+
       res.status(200).json({ message: 'Quiz deleted successfully' });
     } catch (error) {
       console.error('Error deleting quiz:', error);
@@ -93,6 +111,17 @@ const getQuizzesByCategory = async (category) => {
     return await Quiz.find({ category });
   };
 
+  const getUserQuizzes = async (req, res) => {
+    try {
+      const userId = req.user.uid;
+      const quizzes = await Quiz.find({ userId });
+      res.status(200).json(quizzes);
+    } catch (error) {
+      console.error("Error fetching user's quizzes:", error);
+      res.status(500).json({ message: "Failed to retrieve user's quizzes" });
+    }
+  };
+
   const voteQuiz = async (req, res) => {
     const { quizId } = req.params;
     const { vote } = req.body;
@@ -109,4 +138,4 @@ const getQuizzesByCategory = async (category) => {
     }
 };
 
-module.exports = { addQuiz, editQuiz, deleteQuiz, getAllQuizzes, getQuizzesByCategory, voteQuiz };
+module.exports = { addQuiz, editQuiz, deleteQuiz, getAllQuizzes, getQuizzesByCategory, getUserQuizzes, voteQuiz };
