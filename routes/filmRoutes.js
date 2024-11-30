@@ -10,6 +10,8 @@ router.post('/add/films', verifyToken, upload.single('file'), addFilm);
 
 router.put('/films/:id', verifyToken, editFilm); 
 
+router.put('/user/films/:id', verifyToken, editFilm);
+
 router.delete('/films/:id', verifyToken, deleteFilm);
 
 router.post('/films/:filmId/vote', voteFilm);

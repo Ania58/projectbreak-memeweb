@@ -11,6 +11,8 @@ router.post('/add/images', verifyToken, upload.single('file'), addImage);
 
 router.put('/images/:id', verifyToken, editImage); 
 
+router.put('/user/images/:id', verifyToken, editImage);
+
 router.delete('/images/:id', verifyToken, deleteImage);
 
 router.post('/images/:imageId/vote', voteImage);

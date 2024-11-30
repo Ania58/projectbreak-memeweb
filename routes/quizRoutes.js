@@ -11,6 +11,8 @@ router.post('/add/quizzes', verifyToken, upload.single('file'), addQuiz);
 
 router.put('/quizzes/:id', verifyToken, editQuiz); 
 
+router.put('/user/quizzes/:id', verifyToken, editQuiz);
+
 router.delete('/quizzes/:id', verifyToken, deleteQuiz); 
 
 router.post('/quizzes/:quizId/vote', voteQuiz);
