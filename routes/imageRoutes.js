@@ -15,6 +15,8 @@ router.put('/user/images/:id', verifyToken, editImage);
 
 router.delete('/images/:id', verifyToken, deleteImage);
 
+router.delete('/user/images/:id', verifyToken, deleteImage);
+
 router.post('/images/:imageId/vote', voteImage);
 
 module.exports = router;

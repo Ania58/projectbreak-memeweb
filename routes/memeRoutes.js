@@ -15,6 +15,8 @@ router.put('/user/memes/:id', verifyToken, editMeme);
 
 router.delete('/memes/:id', verifyToken, deleteMeme);
 
+router.delete('/user/memes/:id', verifyToken, deleteMeme);
+
 router.post('/memes/:memeId/vote', voteMeme);
 
 module.exports = router;

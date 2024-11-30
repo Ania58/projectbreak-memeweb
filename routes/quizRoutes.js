@@ -15,6 +15,8 @@ router.put('/user/quizzes/:id', verifyToken, editQuiz);
 
 router.delete('/quizzes/:id', verifyToken, deleteQuiz); 
 
+router.delete('/user/quizzes/:id', verifyToken, deleteQuiz);
+
 router.post('/quizzes/:quizId/vote', voteQuiz);
 
 module.exports = router;

@@ -14,6 +14,8 @@ router.put('/user/films/:id', verifyToken, editFilm);
 
 router.delete('/films/:id', verifyToken, deleteFilm);
 
+router.delete('/user/films/:id', verifyToken, deleteFilm);
+
 router.post('/films/:filmId/vote', voteFilm);
 
 module.exports = router;
