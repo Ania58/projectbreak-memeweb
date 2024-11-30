@@ -97,8 +97,13 @@ const editMeme = async (req, res) => {
         if (meme.userId !== req.user.uid) {
             return res.status(403).json({ message: 'Unauthorized: You can only edit your own memes.' });
         }
+        
+        if (updates.templateId && typeof updates.templateId !== 'string') {
+          return res.status(400).json({ message: 'Invalid template ID format' });
+        }
 
     const updatedMeme = await Meme.findByIdAndUpdate(id, updates, { new: true });
+    
     if (!updatedMeme) return res.status(404).json({ message: 'Meme not found' });
     res.status(200).json(updatedMeme);
   } catch (error) {
