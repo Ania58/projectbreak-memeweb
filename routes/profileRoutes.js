@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const verifyToken = require("../middlewares/auth");
@@ -62,10 +62,24 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+router.delete("/", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.uid;
+
+    const user = await User.findOneAndDelete({ uid: userId });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ message: "Account and related content deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ message: "Failed to delete account" });
+  }
+});
+
+module.exports = router;*/
 
 
-/*The code before verification
+//The code before verification
 
 const express = require("express");
 const router = express.Router();
@@ -130,4 +144,18 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router; */
+router.delete("/", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.uid;
+
+    const user = await User.findOneAndDelete({ uid: userId });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ message: "Account and related content deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    res.status(500).json({ message: "Failed to delete account" });
+  }
+});
+
+module.exports = router; 
