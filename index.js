@@ -1,5 +1,5 @@
 const express = require('express');
-const { approveOldContent } = require('./controllers/oldContentChanges.js');
+const { approveOldContent, updateOldContent } = require('./controllers/oldContentChanges.js');
 const path = require('path');
 //const cookieParser = require('cookie-parser');
 const admin = require('firebase-admin');
@@ -59,6 +59,7 @@ app.use((err, req, res, next) => {
 });
 
 approveOldContent();
+updateOldContent();
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 

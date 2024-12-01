@@ -117,8 +117,6 @@ const deleteMeme = async (req, res) => {
   const { id } = req.params;
 
   try {
-    /*const deletedMeme = await Meme.findByIdAndDelete(id);
-    if (!deletedMeme) return res.status(404).json({ message: 'Meme not found' });*/
 
     const meme = await Meme.findById(id);
     if (!meme) return res.status(404).json({ message: 'Meme not found' });
@@ -166,7 +164,10 @@ const voteMeme = async (req, res) => {
   const { vote } = req.body;
 
   try {
-      const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+      const update = vote === 1 
+            ? { $inc: { upvotes: 1 }, $set: { lastVotedAt: new Date() } }
+            : { $inc: { downvotes: 1 }, $set: { lastVotedAt: new Date() } };
+
       const meme = await Meme.findByIdAndUpdate(memeId, update, { new: true });
 
       if (!meme) return res.status(404).json({ message: "Meme not found" });

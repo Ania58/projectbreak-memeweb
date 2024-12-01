@@ -2,9 +2,6 @@ const Quiz = require('../models/Quiz');
 
 const addQuiz = async (req, res) => {
   try {
-    //console.log('Incoming request body:', req.body);
-    //console.log('Uploaded file:', req.file);
-
     if (!req.user || !req.user.uid) {
       return res.status(403).json({ message: "Unauthorized: User ID missing" });
     }
@@ -78,8 +75,6 @@ const editQuiz = async (req, res) => {
     const { id } = req.params;
   
     try {
-      /*const deletedQuiz = await Quiz.findByIdAndDelete(id);
-      if (!deletedQuiz) return res.status(404).json({ message: 'Quiz not found' });*/
 
       const quiz = await Quiz.findById(id);
       if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
@@ -127,7 +122,11 @@ const getQuizzesByCategory = async (category) => {
     const { vote } = req.body;
 
     try {
-        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+      
+        const update = vote === 1 
+        ? { $inc: { upvotes: 1 }, $set: { lastVotedAt: new Date() } }
+        : { $inc: { downvotes: 1 }, $set: { lastVotedAt: new Date() } };
+
         const quiz = await Quiz.findByIdAndUpdate(quizId, update, { new: true });
 
         if (!quiz) return res.status(404).json({ message: "Quiz not found" });

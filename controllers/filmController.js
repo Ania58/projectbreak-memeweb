@@ -55,8 +55,6 @@ const editFilm = async (req, res) => {
     const { id } = req.params;
   
     try {
-      /*const deletedFilm = await Film.findByIdAndDelete(id);
-      if (!deletedFilm) return res.status(404).json({ message: 'Film not found' });*/
 
       const film = await Film.findById(id);
       if (!film) return res.status(404).json({ message: 'Film not found' });
@@ -76,7 +74,7 @@ const editFilm = async (req, res) => {
 
 const getAllFilms = async (req, res) => {
     try {
-        const films = await Film.find();  // Retrieve all films
+        const films = await Film.find();  
         res.status(200).json(films);
     } catch (error) {
         console.error("Error fetching films:", error);
@@ -105,7 +103,11 @@ const getFilmsByCategory = async (category) => {
     const { vote } = req.body; 
 
     try {
-        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+       
+        const update = vote === 1 
+            ? { $inc: { upvotes: 1 }, $set: { lastVotedAt: new Date() } }
+            : { $inc: { downvotes: 1 }, $set: { lastVotedAt: new Date() } };
+            
         const film = await Film.findByIdAndUpdate(filmId, update, { new: true });
 
         if (!film) return res.status(404).json({ message: "Film not found" });

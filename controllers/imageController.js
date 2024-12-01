@@ -17,7 +17,7 @@ const addImage = async (req, res) => {
             title,
             category,
             imageUrl,
-            tags: tags.split(',').map(tag => tag.trim()), // Split tags into an array
+            tags: tags.split(',').map(tag => tag.trim()), 
             agreements,
             isApproved: isApproved !== undefined ? isApproved : false,
             userId: req.user.uid,
@@ -56,9 +56,7 @@ const editImage = async (req, res) => {
     const { id } = req.params;
   
     try {
-      /*const deletedImage = await Image.findByIdAndDelete(id);
-      if (!deletedImage) return res.status(404).json({ message: 'Image not found' });*/
-
+     
       const image = await Image.findById(id);
       if (!image) return res.status(404).json({ message: 'Image not found' });
 
@@ -106,7 +104,11 @@ const getImagesByCategory = async (category) => {
     const { vote } = req.body; 
 
     try {
-        const update = vote === 1 ? { $inc: { upvotes: 1 } } : { $inc: { downvotes: 1 } };
+      
+        const update = vote === 1 
+            ? { $inc: { upvotes: 1 }, $set: { lastVotedAt: new Date() } }
+            : { $inc: { downvotes: 1 }, $set: { lastVotedAt: new Date() } };
+            
         const image = await Image.findByIdAndUpdate(imageId, update, { new: true });
 
         if (!image) return res.status(404).json({ message: "Image not found" });

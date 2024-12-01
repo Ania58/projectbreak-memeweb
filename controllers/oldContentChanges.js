@@ -6,21 +6,34 @@ const Quiz = require('../models/Quiz');
 async function approveOldContent() {
     try {
         await Film.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Films updated');
 
         await Image.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Images updated');
-
+      
         await Meme.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Memes updated');
-
+       
         await Quiz.updateMany({ isApproved: { $exists: false } }, { $set: { isApproved: true } });
-        //console.log('Quizzes updated');
-
+        
     } catch (error) {
         console.error('Error updating old content:', error);
     }
 }
 
+const updateOldContent = async () => {
+    const now = new Date();
+    try {
+      await Film.updateMany({ lastVotedAt: { $exists: false } }, { $set: { lastVotedAt: now } });
 
-module.exports = { approveOldContent }
+      await Image.updateMany({ lastVotedAt: { $exists: false } }, { $set: { lastVotedAt: now } });
+
+      await Meme.updateMany({ lastVotedAt: { $exists: false } }, { $set: { lastVotedAt: now } });
+
+      await Quiz.updateMany({ lastVotedAt: { $exists: false } }, { $set: { lastVotedAt: now } });
+     
+    } catch (error) {
+      console.error('Error updating old content:', error);
+    }
+  };
+  
+
+
+module.exports = { approveOldContent, updateOldContent }

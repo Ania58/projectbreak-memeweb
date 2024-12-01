@@ -47,6 +47,7 @@ const filmSchema = new mongoose.Schema({
   },
    upvotes: { type: Number, default: 0 },
    downvotes: { type: Number, default: 0 },
+   lastVotedAt: { type: Date },
    isApproved: { type: Boolean, default: false },
    userId: { type: String, required: true },
 });
