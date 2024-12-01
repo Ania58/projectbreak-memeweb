@@ -1,4 +1,4 @@
-/*const express = require("express");
+const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const verifyToken = require("../middlewares/auth");
@@ -76,12 +76,12 @@ router.delete("/", verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router;*/
+module.exports = router;
 
 
 //The code before verification
 
-const express = require("express");
+{/*const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const verifyToken = require("../middlewares/auth");
@@ -158,4 +158,4 @@ router.delete("/", verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router; */}
