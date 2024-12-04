@@ -1,6 +1,6 @@
 # ProjectBreak MemeWeb - Backend
 
-Este backend está desarrollado con **Node.js** y sirve como núcleo para un sitio web que permite tanto a administradores como a usuarios crear y gestionar contenido como imágenes, películas, memes y cuestionarios. El backend maneja el almacenamiento de contenido, la autenticación de usuarios y las operaciones CRUD utilizando **MongoDB**.
+Este backend está desarrollado con **Node.js** y sirve como núcleo para un sitio web que permite tanto a administradores como a usuarios crear y gestionar contenido como imágenes, vídeos, memes y cuestionarios. El backend maneja el almacenamiento de contenido, la autenticación de usuarios y las operaciones CRUD utilizando **MongoDB**.
 
 ---
 
@@ -166,7 +166,7 @@ dbConnection();
 
 ### 3. Modelos
 
-Crea modelos separados para imágenes, películas, memes y cuestionarios en la carpeta `models/`:
+Crea modelos separados para imágenes, vídeos, memes y cuestionarios en la carpeta `models/`:
 
 **Ejemplo: `Film.js`**
 
@@ -197,7 +197,7 @@ module.exports = mongoose.model('Film', FilmSchema);
 
 Crea controladores separados para cada tipo de contenido (por ejemplo, `filmController.js`) e implementa la lógica CRUD:
 
-**Ejemplo: Añadir película en `filmsController.js`**
+**Ejemplo: Añadir vídeo en `filmsController.js`**
 
 ```javascript
 const Film = require('../models/Film');

@@ -48,7 +48,7 @@ const { getQuizzesByCategory } = require('./quizController');
         const memes = await Meme.find({ isApproved: true });
         const quizzes = await Quiz.find({ isApproved: true });
 
-        res.status(200).json({ films, images, memes, quizzes }); // Send combined response
+        res.status(200).json({ films, images, memes, quizzes }); 
     } catch (error) {
         console.error("Error fetching content:", error);
         res.status(500).json({ message: 'Failed to retrieve content' });
@@ -95,36 +95,7 @@ const searchContent = async (req, res) => {
   const query = req.query.query;
 
   try {
-    /*const films = await Film.find({
-      $or: [
-        { category: query },
-        { filmCategory: query },
-        { tags: { $in: [query] } }
-      ]
-    });
-    
-    const images = await Image.find({
-      $or: [
-        { category: query },
-        { tags: { $in: [query] } }
-      ]
-    });
-    
-    const memes = await Meme.find({
-      $or: [
-        { category: query },
-        { tags: { $in: [query] } }
-      ]
-    });
-    
-    const quizzes = await Quiz.find({
-      $or: [
-        { category: query },
-        { tags: { $in: [query] } }
-      ]
-    });*/
-
-    const regexQuery = new RegExp(query, 'i'); // case-insensitive 
+    const regexQuery = new RegExp(query, 'i'); 
 
     const films = await Film.find({
       $or: [

@@ -1,11 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-/*router.get('/', memeController.getMemes);
-router.get('/page/:pageNumber', memeController.getPaginatedMemes);*/
-
-//router.get('/', memeController.getAllImages)
-
 const { getAllContent, getContentByCategory, getPendingContent, getPaginatedContent, searchContent, getContentById } = require('../controllers/mainController');
 const { getAllFilms, getUserFilms } = require('../controllers/filmController');
 const { getAllImages, getUserImages } = require('../controllers/imageController');
@@ -39,7 +34,7 @@ router.get('/content/search', searchContent);
 
 router.get('/content/page/:pageNumber', getPaginatedContent); 
 
-router.get('/content/:id', getContentById); //if I have authentication done, here goes a middleware (comment only for the logged ones)
+router.get('/content/:id', getContentById); 
 
 router.get('/pending',  promoteContentToMain, getPendingContent);
 
