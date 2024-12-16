@@ -214,7 +214,10 @@ const proxyImage = async (req, res) => {
   }
 
   try {
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const response = await axios.get(imageUrl, { 
+      responseType: 'arraybuffer',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MyApp/1.0; +http://example.com)' },
+    });
 
     res.setHeader('Content-Type', response.headers['content-type']);
     res.setHeader('Cache-Control', 'public, max-age=86400'); 
