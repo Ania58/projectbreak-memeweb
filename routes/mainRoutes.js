@@ -10,6 +10,16 @@ const { getTopContent } = require('../controllers/topContentController');
 const  promoteContentToMain  = require('../middlewares/promoteContentToMain');
 const verifyToken = require('../middlewares/auth')
 
+router.get("/proxy/get-memes", async (req, res) => {
+    try {
+      const response = await axios.get("https://api.imgflip.com/get_memes");
+      res.json(response.data);
+    } catch (error) {
+      console.error("Error fetching memes:", error.message);
+      res.status(500).json({ message: "Failed to fetch memes." });
+    }
+  });
+
 router.get('/', getAllContent);
 
 router.get('/films', getAllFilms);
