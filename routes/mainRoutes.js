@@ -13,10 +13,15 @@ const verifyToken = require('../middlewares/auth')
 router.get("/proxy/get-memes", async (req, res) => {
     try {
       const response = await axios.get("https://api.imgflip.com/get_memes");
-      res.json(response.data);
+  
+      if (response.data && response.data.success && response.data.data.memes) {
+        return res.json(response.data); 
+      }
+      console.error("Unexpected response from imgflip:", response.data);
+      return res.status(500).json({ message: "Invalid response from imgflip API." });
     } catch (error) {
-      console.error("Error fetching memes:", error.message);
-      res.status(500).json({ message: "Failed to fetch memes." });
+      console.error("Error fetching memes from imgflip:", error.message);
+      return res.status(500).json({ message: "Failed to fetch memes." });
     }
   });
 
