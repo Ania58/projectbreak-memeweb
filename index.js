@@ -2,6 +2,7 @@ const express = require('express');
 const { approveOldContent, updateOldContent } = require('./controllers/oldContentChanges.js');
 const path = require('path');
 const admin = require('firebase-admin'); 
+const axios = require('axios');
 
 require('dotenv').config();
 const cors = require('cors');
@@ -33,6 +34,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/proxy/get-memes', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.imgflip.com/get_memes');
+    res.json(response.data); 
+  } catch (error) {
+    console.error('Error fetching memes:', error.message);
+    res.status(500).json({ message: 'Failed to fetch memes.' });
+  }
+});
 
 app.use('/', mainRoutes);
 app.use('/', filmRoutes); 
