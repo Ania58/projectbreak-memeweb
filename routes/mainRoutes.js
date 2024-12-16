@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getAllContent, getContentByCategory, getPendingContent, getPaginatedContent, searchContent, getContentById } = require('../controllers/mainController');
+const { getAllContent, getContentByCategory, getPendingContent, getPaginatedContent, searchContent, getContentById, proxyImage } = require('../controllers/mainController');
 const { getAllFilms, getUserFilms } = require('../controllers/filmController');
 const { getAllImages, getUserImages } = require('../controllers/imageController');
 const { getAllMemes, getUserMemes } = require('../controllers/memeController');
@@ -39,6 +39,8 @@ router.get('/content/:id', getContentById);
 router.get('/pending',  promoteContentToMain, getPendingContent);
 
 router.get('/top', getTopContent);
+
+router.get('/proxy/image', proxyImage);
 
 
 
